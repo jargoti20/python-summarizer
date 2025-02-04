@@ -16,18 +16,38 @@ A simple yet powerful Python-based content analyzer that uses DeepSeek API and M
 - Error handling and validation
 
 ## Prerequisites
+
 - Obtain API Key from DeepSeek (https://platform.deepseek.com/)
 - Obtain API Key from Moonshot (https://platform.moonshot.com/)
+
 ## Installation
+
+1. Install the virtual environment
+```bash
+python -m venv venv
+```
+
+2. Install the dependencies
 ```bash
 pip install openai beautifulsoup4 markdown selenium requests python-dotenv
 ```
 
+3. Create a `.env` file and add your API keys, you can use the `.env.example` file as a template
+```bash
+DEEPSEEK_API_KEY=your_deepseek_api_key
+MOONSHOT_API_KEY=your_moonshot_api_key
+```
+
 ## Usage
+
+### Activate the virtual environment
+```bash
+source venv/bin/activate
+```
 
 ### Analyzing a Markdown File
 
-Users can use the -m flag to analyze a Markdown file, -H flag to analyze an HTML file, or -w flag to analyze a web page.
+Users can use the flags `-m` to analyze a Markdown file, `-H` to analyze an HTML file, or `-w` to analyze a web page.
 
 ```bash
 python summarizer.py -m path/to/article.md
@@ -63,19 +83,24 @@ python summarizer.py -w https://example.com/article
 }
 ```
 
-## Configuration
+## Using Moonshot API
 
-Replace the `DEEPSEEK_API_KEY` and `MOONSHOT_API_KEY` in summarizer.py with your DeepSeek and Moonshot API keys:
-
-```python
-DEEPSEEK_API_KEY = "your-api-key-here"
-MOONSHOT_API_KEY = "your-api-key-here"
+The default `summarizer.py` file uses the DeepSeek API. Users can use the `summarizer-moonshot.py` file to use the Moonshot API.
+```bash
+python summarizer-moonshot.py -m path/to/article.md
 ```
 
 ## Alias
 
+I personally use have added an alias to my `.zshrc` file to make it easier to run the script.
+
 ```bash
 alias f(){ cd /users/the_path_to_your_project/summarizer && source venv/bin/activate && python summarizer.py $1 "$2" && deactivate && cd -; unset -f f; }; f
+```
+
+Replace `/users/the_path_to_your_project/summarizer` with the path to your project and `f` with whatever name you want to use. Then run the following command to activate the alias.
+```bash
+source ~/.zshrc
 ```
 
 ## Error Handling

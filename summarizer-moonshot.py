@@ -19,7 +19,7 @@ load_dotenv()
 
 # Initialize the Moonshot client
 MOONSHOT_API_KEY = os.getenv("MOONSHOT_API_KEY")  # Use the API key from .env
-moonshot_client = OpenAI(api_key=MOONSHOT_API_KEY, base_url="https://api.moonshot.com")
+moonshot_client = OpenAI(api_key=MOONSHOT_API_KEY, base_url="https://api.moonshot.cn/v1")
 
 class LoadingAnimation:
     def __init__(self):
@@ -100,7 +100,7 @@ def fetch_webpage_content(url, loading=None):
         raise Exception(f"Failed to fetch webpage: {e}")
 
 def analyze_article(content, loading=None):
-    """Send article content to DeepSeek API for analysis."""
+    """Send article content to Moonshot API for analysis."""
     try:
         if loading:
             loading.update_state("Analyzing")
@@ -108,9 +108,14 @@ def analyze_article(content, loading=None):
         response = moonshot_client.chat.completions.create(
             model="moonshot-v1-8k",  # Changed model name
             messages=[
-                {"role": "system", "content": """You are a skilled editor specializing in creating engaging subtitles. 
+                {"role": "system", "content": """You are a skilled editor specializing in creating engaging titles and subtitles. 
                 Analyze the following article and provide the following in JSON format:
                 {
+                    "title1": "First title suggestion",
+                    "title2": "Second title suggestion",
+                    "title3": "Third title suggestion",
+                    "title4": "Fourth title suggestion",
+                    "title5": "Fifth title suggestion",
                     "subtitle1": "First subtitle suggestion",
                     "subtitle2": "Second subtitle suggestion",
                     "subtitle3": "Third subtitle suggestion",
@@ -120,6 +125,13 @@ def analyze_article(content, loading=None):
                     "category": ["main category"],
                     "tags": ["tag1", "tag2", "tag3"]
                 }
+
+                For the titles:
+                - Each title MUST be under 60 characters (very important)
+                - Be attention-grabbing and clear
+                - Avoid clickbait style
+                - Use active voice
+                - Include keywords when relevant
 
                 For the subtitles:
                 - Each subtitle MUST be between 90-95 characters long, strictly cannot be longer than 95 characters (very important)
